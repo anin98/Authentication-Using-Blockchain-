@@ -1,29 +1,17 @@
-import React,{ useState } from 'react';
-
+import React, {useState,useEffect} from 'react';
+import {API_BASE_URL} from './config';
 import './App.css';
-
+import Blockchain from './Blockchain';
 function App() {
-  const [userQuery, setUserQuery] = useState('');
-  const updateUserQuery = event =>{
-  console.log('userQuery', userQuery);
-  setUserQuery(event.target.value);
-  }
-  const searchQuery = () => {
-    window.open(`https://google.com/search?q=${userQuery}`);
-  }
-  const handleKeyPress = event => {
-    if (event.key === 'Enter') {
-      searchQuery();
-    }
-  }
-  return (
+
+
+return (
     <div className="App">
-    <input value ={userQuery} onChange = {updateUserQuery} onKeyPress={handleKeyPress} />
-    <button onClick={searchQuery}>Search</button>
-      <div>{userQuery}</div>
+<h3>Welcome to Blockchain Authentication</ h3>
 
-    </div>
-  );
+<Blockchain/>
+</div>
+);
 }
-
 export default App;
+

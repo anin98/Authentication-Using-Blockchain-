@@ -8,8 +8,10 @@ from pubsub import PubSub
 from wallet import wallet
 from wallet.transaction import Transaction
 from wallet.wallet import Wallet
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app,resources={r'/*': {'origins':'http://localhost:3000'}})
 blockchain = Blockchain()
 pubsub = PubSub(blockchain)
 
