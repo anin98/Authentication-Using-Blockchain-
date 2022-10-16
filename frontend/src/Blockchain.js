@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import {API_BASE_URL } from './config';
-import Blockchain from './Blockchain'
-function BlockChain(){
+function Blockchain(){
 const [blockchain,setBlockchain] = useState([]);
 useEffect(() => {
 fetch(`${API_BASE_URL}blockchain`)
