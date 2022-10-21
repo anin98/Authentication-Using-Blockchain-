@@ -13,3 +13,7 @@ class ApplicationConfig:
     SESSION_USE_SIGNER = True
     SESSION_REDIS=redis.from_url("redis://127.0.0.1:6379")
 
+# <Route path="/" exact component={LandingPage} />
+#         <Route path="/login" exact component={LoginPage} />
+#         <Route path="/register" exact component={RegisterPage} />
+# <Route component={NotFound} />

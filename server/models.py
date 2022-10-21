@@ -1,4 +1,10 @@
+from flask import Flask, request, jsonify, make_response
 from flask_sqlalchemy import SQLAlchemy
+from functools import wraps
+import config
+from datetime import datetime, timedelta
+import jwt
+import os
 from uuid import uuid4
 db = SQLAlchemy()
 def get_uuid():
@@ -11,5 +17,3 @@ class User(db.Model):
     password = db.Column(db.Text,nullable=False)
 
 
-# "email":"anin2gmaul.com",
-#     "password": "pass"

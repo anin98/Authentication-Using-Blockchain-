@@ -16,6 +16,7 @@ db.init_app(app)
 with app.app_context():
     db.create_all()
 
+@cross_origin
 @app.route("/@me",methods =["GET"])
 def get_current_user():
     user_id = session.get("user_id")
@@ -29,7 +30,7 @@ def get_current_user():
         "name": user.name,
         "email": user.email
     })
-
+@cross_origin
 @app.route("/register", methods =["POST"])
 def register_user():
     name = request.json["name"]
@@ -50,7 +51,7 @@ def register_user():
          "name": new_user.name,
         "email": new_user.email
     })
-
+@cross_origin
 @app.route("/login",methods=["POST"])
 def login_user():
     email = request.json["email"]
@@ -71,7 +72,7 @@ def login_user():
         "name": user.name,
         "email": user.email
     })
-
+@cross_origin
 @app.route("/logout", methods=["POST"])
 def logout_user():
     session.pop("user_id")
