@@ -15,6 +15,7 @@ const LandingPage: React.FC = () => {
       try {
         const resp = await httpClient.get("//localhost:2000/@me");
         setUser(resp.data);
+        console.log(resp.data);
       } catch (error) {
         console.log("Not authenticated");
       }
@@ -28,7 +29,9 @@ const LandingPage: React.FC = () => {
         <div>
           <h2>Logged in</h2>
           <h3>ID: {user.id}</h3>
-          
+
+          <h3>Name: {user.name}</h3>
+
           <h3>Email: {user.email}</h3>
 
           <button onClick={logoutUser}>Logout</button>
