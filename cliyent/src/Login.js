@@ -3,9 +3,11 @@ import useAuth from './hooks/useAuth';
 import { useNavigate, useLocation} from "react-router-dom"
 import * as api from "./Api";
 import Home from "./Home";
+import Swal from 'sweetalert2';
+
 
 const Login =()=>{
-    const {setAuth} = useAuth();
+    
     const navigate = useNavigate();
     const location = useLocation();
     const from = location.state?.from?.pathname || "/";
@@ -13,8 +15,7 @@ const Login =()=>{
 
     const [user, setUser]=useState('');
     const [pwd ,setPwd] = useState('');
-    const[errMsg, setErrMsg]= useState('');
-    const[success, setSuccess]= useState(false);
+    
 
     useEffect(() => { //the focus is on the input , using reference to store the component in the dependency
 
@@ -25,14 +26,14 @@ const Login =()=>{
 
 //        console.log(user,pwd);
         const res = await api.login({email:user, password:pwd});
+        
         console.log(res)
-//        setAuth({user,pwd})
 //        setErrMsg(res.error||null)
         //setUser('');
         //setPwd('');
 //        navigate(from, { replace: true });
         
-
+        
         
  
     }

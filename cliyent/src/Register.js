@@ -1,8 +1,8 @@
-import {useRef,useState, useEffect} from 'react';
+import {useState, useEffect} from 'react';
 import useAuth from './hooks/useAuth';
 import { useNavigate, useLocation} from "react-router-dom"
 import * as api from "./Api";
-
+import Swal from 'sweetalert2';
 
 const Register =()=>{
     const {setAuth} = useAuth();
@@ -13,8 +13,7 @@ const Register =()=>{
     const [name, setName]=useState('');
     const [user, setUser]=useState('');
     const [pwd ,setPwd] = useState('');
-    const[errMsg, setErrMsg]= useState('');
-    const[success, setSuccess]= useState(false);
+    
 
     useEffect(() => { //the focus is on the input , using reference to store the component in the dependency
 
@@ -32,8 +31,7 @@ const Register =()=>{
         //setPwd('');
 //        navigate(from, { replace: true });
 
-
-
+    
 
     }
 
