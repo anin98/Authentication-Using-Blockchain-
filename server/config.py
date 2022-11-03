@@ -1,5 +1,6 @@
 import os
 import redis
+from flask_bcrypt import Bcrypt
 from dotenv import load_dotenv
 load_dotenv()
 class ApplicationConfig:
@@ -12,6 +13,8 @@ class ApplicationConfig:
     SESSION_PERMANET = False
     SESSION_USE_SIGNER = True
     SESSION_REDIS=redis.from_url("redis://127.0.0.1:6379")
+
+    CORS_SUPPORTS_CREDENTIALS= True
 
 # <Route path="/" exact component={LandingPage} />
 #         <Route path="/login" exact component={LoginPage} />
