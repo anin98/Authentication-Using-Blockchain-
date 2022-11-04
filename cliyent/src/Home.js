@@ -13,6 +13,7 @@ const Home = () => {
         navigate('/login');
     }
   return (
+    
     <section>
     <div>Home</div>
     <br />

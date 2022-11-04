@@ -3,9 +3,11 @@ import useAuth from './hooks/useAuth';
 import { useNavigate, useLocation} from "react-router-dom"
 import * as api from "./Api";
 import Home from "./Home";
+import Swal from 'sweetalert2';
+
 
 const Login =()=>{
-    const {setAuth} = useAuth();
+    
     const navigate = useNavigate();
     const location = useLocation();
     const from = location.state?.from?.pathname || "/";
@@ -13,26 +15,28 @@ const Login =()=>{
 
     const [user, setUser]=useState('');
     const [pwd ,setPwd] = useState('');
-    const[errMsg, setErrMsg]= useState('');
-    const[success, setSuccess]= useState(false);
+    
 
     useEffect(() => { //the focus is on the input , using reference to store the component in the dependency
 
      },[]
     )
 
-    const handleSubmit = async()=>{ //will handle the eventa
+    const handleSubmit = async()=>{ 
+        
+        navigate("/home",{replace:true})
+        //will handle the eventa
 
 //        console.log(user,pwd);
         const res = await api.login({email:user, password:pwd});
+        
         console.log(res)
-//        setAuth({user,pwd})
 //        setErrMsg(res.error||null)
         //setUser('');
         //setPwd('');
 //        navigate(from, { replace: true });
         
-
+        
         
  
     }
@@ -42,7 +46,7 @@ const Login =()=>{
         
         <section>
 
-
+           
 
             <h1>Sign In</h1>
                 <label htmlFor ="email"> Email:</label>
@@ -63,7 +67,8 @@ const Login =()=>{
                 value ={pwd}
                 required //clear the form upon submission
                 />
-                <button onClick={handleSubmit}> Sign In </button>
+           
+                <button class="button" onClick={handleSubmit}> Sign In </button> <br></br>
             <p>
                 Need an Account? <br />
                 <span className='line'>
