@@ -41,22 +41,7 @@ export const register =async(user)=>{
     }
     
     catch(err){
-        const Toast = Swal.mixin({
-            toast: true,
-            position: 'top-end',
-            showConfirmButton: false,
-            timer: 3000,
-            timerProgressBar: true,
-            didOpen: (toast) => {
-                toast.addEventListener('mouseenter', Swal.stopTimer)
-                toast.addEventListener('mouseleave', Swal.resumeTimer)
-            }
-        })
-        Toast.fire({
-            icon: 'success',
-            title: 'Registered successfully'
-        })
-       return{success:false}
+        return{success:false}
     }
 }
 
@@ -90,4 +75,3 @@ export const login =async(user)=>{
        return{success:false}
     }
 }
-
