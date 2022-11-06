@@ -14,7 +14,8 @@ html {
 
 body {
     min-height: 100vh;
-    background-color: dodgerblue;
+    background-image: url("bg_img5.jpg");
+    background-size: 100%;
 }
 
 .App {
