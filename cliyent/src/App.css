@@ -24,6 +24,8 @@
   color: white;
 }
 
+
+
 .App-link {
   color: #61dafb;
 }
@@ -36,3 +38,43 @@
     transform: rotate(360deg);
   }
 }
+
+
+.button {
+  position: relative;
+  background-color: #3a81a2;
+  border: none;
+  font-size: 28px;
+  color: #FFFFFF;
+  padding: 20px;
+  width: 200px;
+  text-align: center;
+  transition-duration: 0.4s;
+  text-decoration: none;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.button {
+  display: inline-block;
+  padding: 15px 25px;
+  font-size: 24px;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  outline: none;
+  color: #fff;
+  background-color: Hex #177b5f;
+  border: none;
+  border-radius: 15px;
+  box-shadow: 0 9px rgb(6, 73, 107);
+}
+
+.button:hover {background-color: #5783db}
+
+.button:active {
+  background-color: #5dbea3;
+  box-shadow: 0 5px rgb(10, 1, 23);
+  transform: translateY(4px);
+}
+
