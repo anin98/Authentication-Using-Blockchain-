@@ -2,6 +2,7 @@
   "name": "login-reg-app",
   "version": "0.1.0",
   "private": true,
+
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.2.0",
     "@fortawesome/free-solid-svg-icons": "^6.2.0",
@@ -10,12 +11,18 @@
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
     "axios": "^1.1.3",
+    "js-cookie": "^3.0.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.4.2",
     "react-scripts": "5.0.1",
+    "sha256": "^0.2.0",
+    "sweetalert2": "^11.6.4",
     "web-vitals": "^2.1.4"
   },
+  
+   
+    
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
@@ -39,5 +46,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "typescript": "^4.8.4"
   }
 }

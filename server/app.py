@@ -4,7 +4,7 @@ from flask.json import jsonify
 from flask_cors import CORS, cross_origin
 from flask_session import Session
 from config import ApplicationConfig
-from models import db,User
+from models import db,User,BlockHash
 from flask_session import Session
 app = Flask(__name__)
 
@@ -17,7 +17,7 @@ with app.app_context():
     db.create_all()
 
 @cross_origin
-@app.route("/@me",methods =["GET"])
+@app.route("/me",methods =["GET"])
 def get_current_user():
     user_id = session.get("user_id")
 
@@ -36,7 +36,6 @@ def register_user():
     name = request.json["name"]
     email = request.json["email"]
     password =request.json["password"]
-
     user_exists =User.query.filter_by(name=name).first() is not None
 
     if user_exists:
@@ -45,15 +44,35 @@ def register_user():
     new_user = User(name=name,email=email,password=password)
     db.session.add(new_user)
     db.session.commit()
-
+ 
     return jsonify({
         "id": new_user.id,
          "name": new_user.name,
         "email": new_user.email
     })
+
+@cross_origin
+@app.route("/mine", methods =["POST"])
+def block_hash():
+    us_id = request.json["us_id"]
+    nonce = request.json["nonce"];
+    hash = request.json["hash"];
+    
+    new_hash = BlockHash(us_id=us_id,nonce=nonce,hash=hash)
+    db.session.add(new_hash)
+    db.session.commit()
+
+    return jsonify({
+        "us_id": us_id,
+         "nonce": nonce,
+        "hash": hash
+    })
+
+
 @cross_origin
 @app.route("/login",methods=["POST"])
 def login_user():
+    db.create_all()
     email = request.json["email"]
     password = request.json["password"]
 

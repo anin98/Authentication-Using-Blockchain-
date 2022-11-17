@@ -15,5 +15,12 @@ class User(db.Model):
     name = db.Column(db.String(345),unique=False)
     email = db.Column(db.String(345),unique=False)
     password = db.Column(db.Text,nullable=False)
-
+    # hash = db.relationship('HashTable', backref='users')
+    # 
+class BlockHash(db.Model):
+    __tablename__ ="Hash"
+    us_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    id = db.Column(db.String(32),primary_key=True,unique=True)
+    nonce = db.Column(db.Integer, unique = True)
+    hash = db.Column(db.String,unique=True)
 

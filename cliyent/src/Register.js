@@ -1,8 +1,9 @@
-import {useRef,useState, useEffect} from 'react';
+import {useState, useEffect} from 'react';
+import Blockchain from './blockchain';
 import useAuth from './hooks/useAuth';
 import { useNavigate, useLocation} from "react-router-dom"
 import * as api from "./Api";
-
+import Swal from 'sweetalert2';
 
 const Register =()=>{
     const {setAuth} = useAuth();
@@ -13,8 +14,13 @@ const Register =()=>{
     const [name, setName]=useState('');
     const [user, setUser]=useState('');
     const [pwd ,setPwd] = useState('');
-    const[errMsg, setErrMsg]= useState('');
-    const[success, setSuccess]= useState(false);
+    const [nonce, setNonce] = useState("");
+    const [hash, setHash] = useState("");
+    const authenticate = new Blockchain();
+    
+//     var userID = localStorage.getItem('userID');
+//     console.log(name);
+//  //console.log(authenticate.createNewData(userID,name,user,pwd));
 
     useEffect(() => { //the focus is on the input , using reference to store the component in the dependency
 
@@ -24,16 +30,28 @@ const Register =()=>{
     const handleSubmit = async()=>{ //will handle the eventa
 
 //        console.log(user,pwd);
-        const res = await api.register({name:name, email:user, password:pwd});
+        const res = await api.register({name:name, email:user, password:pwd})
+        // var id = user.id;
+        // console.log(authenticate.createNewData(id,name,user,pwd));
+        // console.log(authenticate.proofOfWork(0,))
         console.log(res)
+        const data = await authenticate.createNewData(res.id, res.name, res.email, pwd);
+    const nonce = await authenticate.proofOfWork(0,data);
+    const hash = await authenticate.hashBlock(0,data,nonce);
+    const block = await authenticate.createNewBlock(nonce,0,hash);
+    console.log(data)
+    console.log(nonce)
+  setNonce = nonce;
+  setHash = hash;
+    console.log(hash);
+    console.log(block)
 //        setAuth({user,pwd})
 //        setErrMsg(res.error||null)
         //setUser('');
         //setPwd('');
 //        navigate(from, { replace: true });
 
-
-
+    
 
     }
 
