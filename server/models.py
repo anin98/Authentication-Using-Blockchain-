@@ -5,6 +5,7 @@ import config
 from datetime import datetime, timedelta
 import jwt
 import os
+
 from uuid import uuid4
 db = SQLAlchemy()
 def get_uuid():
@@ -19,8 +20,12 @@ class User(db.Model):
     # 
 class BlockHash(db.Model):
     __tablename__ ="Hash"
-    us_id = db.Column(db.Integer, db.ForeignKey('users.id'))
-    id = db.Column(db.String(32),primary_key=True,unique=True)
-    nonce = db.Column(db.Integer, unique = True)
-    hash = db.Column(db.String,unique=True)
+    id = db.Column(db.Integer,primary_key=True)
+    us_id = db.Column(db.String(32), nullable=False)
+    nonce = db.Column(db.String)
+    hash = db.Column(db.String)
+    created_at = db.Column(db.String, default=datetime.utcnow())
+
+
+
 

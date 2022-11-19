@@ -60,6 +60,7 @@ def block_hash():
     
     new_hash = BlockHash(us_id=us_id,nonce=nonce,hash=hash)
     db.session.add(new_hash)
+    # db.session.execute("INSERT INTO Hash ('us_id','nonce','hash') Values ('24','13242','24rsvdgd')")
     db.session.commit()
 
     return jsonify({
@@ -76,6 +77,7 @@ def login_user():
     email = request.json["email"]
     password = request.json["password"]
 
+
     user = User.query.filter_by(email=email).first()
     if user is None:
         return jsonify({"error": "Unauthorized"}),401
@@ -85,11 +87,14 @@ def login_user():
         return jsonify({"error": "Unauthorized"}),401
 
     session["user_id"]= user.id
+    hashy = BlockHash.query.filter_by(us_id=user.id).order_by(BlockHash.created_at.desc()).first()
 
     return jsonify({
         "id": user.id,
         "name": user.name,
-        "email": user.email
+        "email": user.email,
+        "hash": hashy.hash
+
     })
 @cross_origin
 @app.route("/logout", methods=["POST"])

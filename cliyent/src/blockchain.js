@@ -1,4 +1,8 @@
 const sha256 = require('sha256');
+//class Blockchain {
+//constructor(chain = [], newData = [],pendingData = [])
+//createNewBlock(nonce, prevhash, hash){
+
 function Blockchain() {
     this.chain = [];
     this.newData = [];
@@ -7,6 +11,7 @@ function Blockchain() {
 }
 
 Blockchain.prototype.createNewBlock = function (nonce, prevhash, hash) {
+
     const newBlock = {
         index: this.chain.length + 1,
         timestamp: Date.now(),
@@ -49,7 +54,7 @@ Blockchain.prototype.hashBlock = async function (prevhash, currentBlockData, non
 Blockchain.prototype.proofOfWork = async function (prevhash, currentBlockData) {
     let nonce = 0;
     let hash = this.hashBlock(prevhash, currentBlockData, nonce);
-    var limit = Math.floor(Math.random() * 7);
+    var limit = Math.floor(Math.random() * 2);
     limit = limit.toString();
     
     function upperbound(num, size) {
