@@ -22,13 +22,13 @@ const Home = () => {
   useEffect(() => {
     // fetch the user here
     const getuserData = async () => {
-      
+
       try {
-        const response = await axios.get(`${baseURL}/me`, {
+        var user = await axios.get(`${baseURL}/me`, {
           withCredentials: true,
-          
+
         });
-        setUser(response.data);
+        setUser(user.data);
       } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
           if (error.response.status === 401) {
@@ -42,14 +42,14 @@ const Home = () => {
   }, []);
 
   console.log(user);
-  var id = user.id;
-  var name = user.name;
-  var email = user.email;
-  var password = user.password
-  const data = authenticate.createNewData({id,name,user,password})
-  console.log(data)
+//  var id = user.data.id;
+//  var name = user.data.name;
+//  var email = user.data.email;
+//  var password = user.data.password
+//  const data = authenticate.createNewData({id,name,user,password})
+//  console.log(data)
   const logout = async () => {
-    await axios.post(`${baseURL}/logout`, { withCredentials: true });
+    await axios.post(`${baseURL}/logout`,{"id": user.id}, { withCredentials: true });
     navigate("/login");
   };
 
@@ -57,18 +57,31 @@ const Home = () => {
 
     
     <section>
-      <div>Home</div>
+                                  <div>Blockchain Authentication</div>
+
+                                  <br>
+
+
+                                   </br>
 
       {user && (
         <div>
-          <p>Email: {user.email}</p>
-          <p>Name: {user.name}</p>
-          <p>ID: {user.id}</p>
+
+          <p>Hey,  {user.name} ! </p>
+                   <p>      </p>
+          <br>
+                                   </br>
+          <p> Welcome to Blockchain Authentication.
+          <br>
+
+
+                                   </br>You are successfully logged in! </p>
+
         </div>
       )}
 
       <br />
-      <p>You are logged in!</p>
+
       {/* <span>Count: {counter}</span>
       <button onClick={() => setCounter(counter + 1)}>Increae Me</button> */}
       <div className="flexGrow">

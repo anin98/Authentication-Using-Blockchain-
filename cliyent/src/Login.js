@@ -25,19 +25,17 @@ const Login = () => {
   }, []);
 
   const handleSubmit = async () => {
- const res = await api.login({ email: user, password: pwd });
-//    const data = await authenticate.createNewData(res.id, res.name, res.email, pwd);
-//    const nonce = await authenticate.proofOfWork(0,data);
-//    const hash = await authenticate.hashBlock(0,data,nonce);
-//    const block = await authenticate.createNewBlock(nonce,0,hash);
-//  console.log(data)
-//  console.log(nonce)
-//  console.log(hash);
-//  console.log(block)
+    const res = await api.login({ email: user, password: pwd });
+    const data = await authenticate.createNewData(res.id, res.name, res.email, pwd);
+    const nonce = await authenticate.proofOfWork(0,data);
+    const hash = await authenticate.hashBlock(0,data,nonce);
+    const block = await authenticate.createNewBlock(nonce,0,hash);
+  console.log(data)
+  console.log(nonce)
+  console.log(hash);
+  console.log(block)
 // setNonce = await nonce;
 // setHash = await hash;
-//  console.log(hash);
-//  console.log(block)
     // var id = res.id;
     // var name = user.name
     // console.log(res.id);
@@ -74,7 +72,7 @@ const Login = () => {
         
       />
       
-      <button onClick={handleSubmit}> Sign In </button>
+      <button class="button"  onClick={handleSubmit}> Sign In </button> <br></br>
       <p>
         Need an Account? <br />
         <span className="line">

@@ -1,28 +1,13 @@
-//import React from "react";
-const Blockchain = require('./blockchain');
-const authenticate = new Blockchain();
-
-// authenticate.createNewBlock(2389,'asgshe','12gsbw');
-// console.log(authenticate.createNewBlock(2382,'asgs22e','12gs12bw'));
-
-console.log(authenticate.createNewData(24,'Anindita','anin@gmail.com','pass'));
-console.log(authenticate.createNewBlock(2382,'asgs22e','12gs12bw'));
-
-const prevhash ='gsywgywgy12354'
+const sha256 = require('sha256');
 
 
 
-const currentBlockData = [
-    {
-    id: 24,
-    name: 'Anindita',
-    email : 'anin@gmail.com',
-    password: 'pass'
-    }
-    
- 
-];
 
-//console.log(authenticate);
-//console.log(authenticate.hashBlock(prevhash,currentBlockData,46));
-console.log(authenticate.proofOfWork(prevhash,currentBlockData));
+
+    const dataAsString = `03{'id': '453d428bf71c4d059dfde27c6a30d1d5', 'name': 'coffee', 'email': 'coffee@gmail.com', 'password': 'coffee', 'timestamp': 1669219630530}`
+
+    var hash = sha256(dataAsString)
+    console.log(dataAsString)
+
+
+console.log(hash)
