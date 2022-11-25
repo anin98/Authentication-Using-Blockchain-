@@ -46,7 +46,7 @@ def fetch_value_from_client():
     PublicKeyClienthex = int(HashClient,16)
     print("PublicKeyClient is ",PublicKeyClienthex)
     # PublicKeyClient = int(PublicKeyClienthex,10)
-    nonce = Blockchain.pendingNonce[-1]
+    nonce = Blockchain.pendingNonce
         # Blockchain.pendingData[int(0)]
     print("Nonce is ", nonce)
     print("PublicKeyServer is ", PublicKeyServer)
@@ -136,23 +136,7 @@ def register_user():
         "email": new_user.email
     })
 
-@cross_origin
-@app.route("/mine", methods =["POST"])
-def block_hash():
-    us_id = request.json["us_id"]
-    nonce = request.json["nonce"];
-    hash = request.json["hash"];
 
-    new_hash = BlockHash(us_id=us_id,nonce=nonce,hash=hash)
-    db.session.add(new_hash)
-    # db.session.execute("INSERT INTO Hash ('us_id','nonce','hash') Values ('24','13242','24rsvdgd')")
-    db.session.commit()
-
-    return jsonify({
-        "us_id": us_id,
-         "nonce": nonce,
-        "hash": hash
-    })
 
 
 @cross_origin
@@ -185,9 +169,9 @@ def login_user():
 @cross_origin
 @app.route("/logout", methods=["POST"])
 def logout_user():
-    a = cross_origin()(login_user)
-    print("user id is ",a)
-    session.pop(a)
+    id = request.json["id"]
+    print("user id is ", id)
+    session.pop(id,None)
     return "200"
 if __name__ == "__main__":
     app.run(debug=True)

@@ -157,7 +157,7 @@ while (x === true) {
   var hashunified = await authenticate.hashBlock(0,newdata,NonceUnified);
   console.log("Hash Unified is "+ hashunified)
   const block = await authenticate.createNewBlock(nonce,res.data.hash,hash);
-  await(localStorage.setItem(`u-${res.data.id}` , JSON.stringify(block.data)))
+  await(localStorage.setItem(`u-${res.data.id}` , JSON.stringify(hashunified)))
 
   window.location.replace("http://localhost:3000/home");
 

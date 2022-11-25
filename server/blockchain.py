@@ -9,7 +9,7 @@ import random
 
 class Blockchain:
     pendingData =[]
-    pendingNonce = []
+    pendingNonce = 0
     chain =[]
     newData =[]
 
@@ -47,7 +47,6 @@ class Blockchain:
 
     def hashBlock(self,prevhash,currentBlockData,nonce):
         dataAsString = str(prevhash) + str(nonce) + str(currentBlockData)
-        print(dataAsString)
         hash = hashlib.sha256(dataAsString.encode()).hexdigest()
         return hash
 
@@ -67,10 +66,8 @@ class Blockchain:
             nonce = nonce+1
             hash = self.hashBlock(self,prevhash, currentBlockData, nonce);
 
-            self.pendingNonce.append(nonce)
+            self.pendingNonce = nonce
 
-
-        print(nonce)
         return nonce
 
 
