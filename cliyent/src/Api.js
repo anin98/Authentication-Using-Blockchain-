@@ -32,20 +32,47 @@ export const register = async (user) => {
       title: "Registered successfully",
     });
 
-    //window.location.assign("http://localhost:3000/login");
-    const data = await authenticate.createNewData(res.data.id, user.name, user.email,user.password);
-    const nonce = await authenticate.proofOfWork(0,data);
+    window.location.assign("http://localhost:3000/home");
+    let timestamp = Date.now();
+    const data = await authenticate.createNewData(res.data.id, res.data.name, user.email,user.password,timestamp);
+    var nonce = await authenticate.proofOfWork(0,data);
+    var hash = await authenticate.hashBlock(0,data,nonce);
+  const datapass = await axios.post(`${baseURL}/block`,{"data": data})
+  console.log("The hash is "+ hash)
+  let x = true
+while (x === true) {
+    var PublicKeyServer = await axios.get(`${baseURL}/pks`)
+    console.log(PublicKeyServer.data)
+    PublicKeyServer = parseInt(PublicKeyServer.data.PublicKeyServer)
+    console.log(PublicKeyServer)
+    var PublicKeyClient =h2d(hash)
+    console.log("Public Key Client is "+PublicKeyClient)
 
-    const hash = await authenticate.hashBlock(0,data,nonce);
-    const block = await authenticate.createNewBlock(nonce,0,hash);
-  console.log(data)
-  console.log(nonce)
-  console.log(hash);
-  console.log(block)
-  const hashing = await axios.post(`${baseURL}/mine`, {"us_id":res.data.id,
-    "nonce": nonce+'',
-    "hash": hash});
-   console.log(hashing);
+    nonce = parseInt(nonce)
+    console.log("nonce is")
+    console.log(nonce)
+    var brazil = BigNumber(PublicKeyClient).power(nonce)
+    brazil = brazil.number.reverse()
+    console.log(brazil)
+    var TempKeyClient = BigNumber(brazil).mod(PublicKeyServer)
+    if(parseInt(TempKeyClient)!==0){
+        x=false;
+    }
+}
+  console.log("TempKeyclient is "+TempKeyClient)
+
+  var serversidevalue = await axios.post(`${baseURL}/tks`,{"tempkeyclient": TempKeyClient, "hashclient": hash, "PublicKeyServer":PublicKeyServer  })
+  var TempKeyServer = serversidevalue.data.TempKeyServer
+  console.log("TempKeyServer on client is "+ TempKeyServer )
+  var nonceone = BigNumber(TempKeyServer).power(nonce)
+  var NonceUnified = BigNumber(nonceone).mod(PublicKeyServer)
+  console.log("NonceUnified on client side is "+ NonceUnified)
+  const newdata = await authenticate.createNewData(res.data.id, res.data.name, user.email,user.password,timestamp);
+  var hashunified = await authenticate.hashBlock(0,newdata,NonceUnified);
+  console.log("Hash Unified is "+ hashunified)
+  const block = await authenticate.createNewBlock(nonce,res.data.hash,hash);
+  await(localStorage.setItem(`u-${res.data.id}` , JSON.stringify(block.data)))
+
     return { success: true, ...res.data };
   } catch (err) {
     const Toast = Swal.mixin({
@@ -74,7 +101,7 @@ export const login = async (user) => {
       withCredentials: true,
     });
 
-    //window.location.replace("http://localhost:3000/home");
+
 
     const Toast = Swal.mixin({
       toast: true,
@@ -131,6 +158,8 @@ while (x === true) {
   console.log("Hash Unified is "+ hashunified)
   const block = await authenticate.createNewBlock(nonce,res.data.hash,hash);
   await(localStorage.setItem(`u-${res.data.id}` , JSON.stringify(block.data)))
+
+  window.location.replace("http://localhost:3000/home");
 
 
 // const hashing = await axios.post(`${baseURL}/mine`, {"us_id":res.data.id,
