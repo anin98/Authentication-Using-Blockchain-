@@ -71,7 +71,10 @@ def fetch_value_from_client():
     print("TempKeyServer is ", TempKeyServer)
     print("Nonce Unified is ", NonceUnified)
     print("Hash unified is ", hashUnified)
-
+    id = (data[7:39])
+    new_hash = BlockHash(us_id=id,nonce=NonceUnified,hash=hashUnified)
+    db.session.add(new_hash)
+    db.session.commit()
 
 
 
@@ -95,6 +98,7 @@ def get_current_block():
     hash= Blockchain.hashBlock(Blockchain,0,data,nonce)
     print(nonce)
     print(hash)
+
 
     return jsonify({
        "data": data

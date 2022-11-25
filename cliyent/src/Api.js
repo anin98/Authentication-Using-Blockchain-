@@ -98,20 +98,26 @@ export const login = async (user) => {
     var hash = await authenticate.hashBlock(0,data,nonce);
   const datapass = await axios.post(`${baseURL}/block`,{"data": data})
   console.log("The hash is "+ hash)
-  var PublicKeyServer = await axios.get(`${baseURL}/pks`)
-  console.log(PublicKeyServer.data)
-  PublicKeyServer = parseInt(PublicKeyServer.data.PublicKeyServer)
-  console.log(PublicKeyServer)
-  var PublicKeyClient =h2d(hash)
-  console.log("Public Key Client is "+PublicKeyClient)
+  let x = true
+while (x === true) {
+    var PublicKeyServer = await axios.get(`${baseURL}/pks`)
+    console.log(PublicKeyServer.data)
+    PublicKeyServer = parseInt(PublicKeyServer.data.PublicKeyServer)
+    console.log(PublicKeyServer)
+    var PublicKeyClient =h2d(hash)
+    console.log("Public Key Client is "+PublicKeyClient)
 
-  nonce = parseInt(nonce)
-  console.log("nonce is")
-  console.log(nonce)
-  var brazil = BigNumber(PublicKeyClient).power(nonce)
-  brazil = brazil.number.reverse()
-  console.log(brazil)
-  var TempKeyClient = BigNumber(brazil).mod(PublicKeyServer)
+    nonce = parseInt(nonce)
+    console.log("nonce is")
+    console.log(nonce)
+    var brazil = BigNumber(PublicKeyClient).power(nonce)
+    brazil = brazil.number.reverse()
+    console.log(brazil)
+    var TempKeyClient = BigNumber(brazil).mod(PublicKeyServer)
+    if(parseInt(TempKeyClient)!==0){
+        x=false;
+    }
+}
   console.log("TempKeyclient is "+TempKeyClient)
 
   var serversidevalue = await axios.post(`${baseURL}/tks`,{"tempkeyclient": TempKeyClient, "hashclient": hash, "PublicKeyServer":PublicKeyServer  })
