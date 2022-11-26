@@ -4,6 +4,7 @@ import Layout from "./Layout";
 import RequireAuth from "./RequireAuth";
 import Home from "./Home";
 import { Routes, Route } from "react-router-dom";
+import Default from './Default';
 
 function App() {
   return (
@@ -12,7 +13,7 @@ function App() {
         {/*public routes */}
         <Route path="login" element={<Login />} />
         <Route path="register" element={<Register />} />
-
+        <Route path="/" element={<Default/>}/>
         {/*protected routes */}
 
         <Route path="/home" element={<Home />} />

@@ -1,9 +1,4 @@
 const sha256 = require('sha256');
-//class Blockchain {
-//constructor(chain = [], newData = [],pendingData = [])
-//createNewBlock(nonce, prevhash, hash){
-    let  timestamp ;
-
 function Blockchain() {
     this.chain = [];
     this.newData = [];
@@ -12,9 +7,9 @@ function Blockchain() {
 }
 
 Blockchain.prototype.createNewBlock = function (nonce, prevhash, hash) {
-
     const newBlock = {
         index: this.chain.length + 1,
+        timestamp: Date.now(),
         data: this.pendingData,
         nonce: nonce,
         hash: hash,
@@ -28,7 +23,7 @@ Blockchain.prototype.getLastBlock = function () {
     return this.chain[this.chain.length - 1];
 }
 //first we have to call this
-Blockchain.prototype.createNewData = async function (id, name, email, password, timestamp) {
+Blockchain.prototype.createNewData = async function (id, name, email, password) {
     // console.log(id);
     // console.log(name);
     // console.log(email);
@@ -37,10 +32,9 @@ Blockchain.prototype.createNewData = async function (id, name, email, password, 
         id: id,
         name: name,
         email: email,
-        password: password,
-        timestamp: timestamp
+        password: password
     };
-    
+    console.log(newData);
     this.pendingData.push(newData);
     return newData;
 }
@@ -48,33 +42,26 @@ Blockchain.prototype.createNewData = async function (id, name, email, password, 
 Blockchain.prototype.hashBlock = async function (prevhash, currentBlockData, nonce) {
     nonce = "" + nonce;
     const dataAsString = prevhash + nonce + JSON.stringify(currentBlockData);
-    // console.log("Data is "+ dataAsString)
-    var hash = sha256(dataAsString)
-    // console.log("Hash is "+hash)
+    const hash = sha256(dataAsString);
     return hash;
 }
 //second we have to call this
 Blockchain.prototype.proofOfWork = async function (prevhash, currentBlockData) {
     let nonce = 0;
     let hash = this.hashBlock(prevhash, currentBlockData, nonce);
-    var limit = 2
-//    Math.floor(Math.random() * 2);
-    limit = limit.toString();
-    
+    var limit = Math.floor(Math.random() * 7);
     function upperbound(num, size) {
         num = num.toString();
         while (num.length < size) num = "0" + num;
         return num;
     }
-    //00eyueieoe383
-    var lim = upperbound('0', limit);
+    var lim = upperbound(0, limit);
     lim = lim.toString();
-    while ((await hash).substring('0', limit) != lim) {
+    while (hash.substring(0, limit) != lim) {
         nonce++;
         hash = this.hashBlock(prevhash, currentBlockData, nonce);
-        
     }
     return nonce;
 }
-module.exports = Blockchain;
-//export default Blockchain;
+// module.exports = Blockchain;
+export default Blockchain;

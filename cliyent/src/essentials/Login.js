@@ -11,8 +11,6 @@ const Login = () => {
 
   const [user, setUser] = useState("");
   const [pwd, setPwd] = useState("");
-  const [nonce, setNonce] = useState("");
-  const [hash, setHash] = useState("");
   
   //  const data = async () => {
   //   const id = user.id;
@@ -25,6 +23,7 @@ const Login = () => {
   }, []);
 
   const handleSubmit = async () => {
+
     const res = await api.login({ email: user, password: pwd });
     const data = await authenticate.createNewData(res.id, res.name, res.email, pwd);
     const nonce = await authenticate.proofOfWork(0,data);
@@ -33,9 +32,7 @@ const Login = () => {
   console.log(data)
   console.log(nonce)
   console.log(hash);
-  console.log(block)
-// setNonce = await nonce;
-// setHash = await hash;
+  console.log(block);
     // var id = res.id;
     // var name = user.name
     // console.log(res.id);
@@ -66,13 +63,13 @@ const Login = () => {
       <label htmlFor="password"> Password:</label>
       <input
         type="password"
-        onChange={(e) => setPwd(e.target.value)}  // set the anon function to userstate
-        value={pwd}w 
+        onChange={(e) => setPwd(e.target.value)} // set the anon function to userstate
+        value={pwd}w
         required //clear the form upon submission
         
       />
       
-      <button class="button"  onClick={handleSubmit}> Sign In </button> <br></br>
+      <button onClick={handleSubmit}> Sign In </button>
       <p>
         Need an Account? <br />
         <span className="line">

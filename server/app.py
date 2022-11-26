@@ -169,9 +169,7 @@ def login_user():
 @cross_origin
 @app.route("/logout", methods=["POST"])
 def logout_user():
-    id = request.json["id"]
-    print("user id is ", id)
-    session.pop(id,None)
+    session.clear()
     return "200"
 if __name__ == "__main__":
     app.run(debug=True)
