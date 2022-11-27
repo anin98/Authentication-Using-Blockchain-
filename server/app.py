@@ -1,6 +1,7 @@
 from flask import Flask,request,abort, jsonify,session
 from flask_bcrypt import Bcrypt
 from flask.json import jsonify
+from sqlalchemy import desc, select
 import json
 from flask_cors import CORS, cross_origin
 from flask_session import Session
@@ -9,6 +10,7 @@ from models import db,User,BlockHash
 from blockchain import Blockchain
 from flask_session import Session
 import random
+import redis
 import sympy
 app = Flask(__name__)
 
@@ -41,8 +43,15 @@ def fetch_value_from_client():
     TempKeyClient = request.json["tempkeyclient"]
     HashClient = request.json["hashclient"]
     PublicKeyServer =request.json["PublicKeyServer"]
+    us_id = request.json["us_id"]
+    hashobject = BlockHash.query.filter_by(us_id=us_id).first()
+    if hashobject is None:
+        haish = 0
+    else:
+       stmt = BlockHash.query.filter_by(us_id=us_id).order_by(BlockHash.created_at.desc()).first()
+       haish = stmt.hash
 
-
+    print("Hash object is ",haish)
     PublicKeyClienthex = int(HashClient,16)
     print("PublicKeyClient is ",PublicKeyClienthex)
     # PublicKeyClient = int(PublicKeyClienthex,10)
@@ -66,7 +75,7 @@ def fetch_value_from_client():
     data = json.dumps(data, separators=(',', ':'))
 
     print(data)
-    hashUnified= Blockchain.hashBlock(Blockchain,0,data,NonceUnified)
+    hashUnified= Blockchain.hashBlock(Blockchain,haish,data,NonceUnified)
     print("TempKeyClient is",TempKeyClient)
     print("TempKeyServer is ", TempKeyServer)
     print("Nonce Unified is ", NonceUnified)
@@ -129,6 +138,7 @@ def register_user():
     new_user = User(name=name,email=email,password=password)
     db.session.add(new_user)
     db.session.commit()
+    session["user_id"]= new_user.id
 
     return jsonify({
         "id": new_user.id,
@@ -166,10 +176,13 @@ def login_user():
         # "hash": hashy.hash
 
     })
+
 @cross_origin
 @app.route("/logout", methods=["POST"])
 def logout_user():
     session.clear()
+    r = redis.Redis()
+    r.flushdb()
     return "200"
 if __name__ == "__main__":
     app.run(debug=True)

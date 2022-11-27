@@ -49,6 +49,7 @@ const Home = () => {
 //  const data = authenticate.createNewData({id,name,user,password})
 //  console.log(data)
   const logout = async () => {
+
     await axios.post(`${baseURL}/logout`, { withCredentials: true });
     navigate("/login");
   };

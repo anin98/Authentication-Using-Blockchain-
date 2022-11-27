@@ -2,6 +2,7 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import Blockchain from './blockchain';
 import h2d from './tester';
+import * as api from "./Api";
 const authenticate = new Blockchain();
 var BigNumber = require('big-number');
 const baseURL = process.env.REACT_APP_API_URL;
@@ -14,7 +15,8 @@ axios.interceptors.request.use((config) => {
 
 export const register = async (user) => {
   try {
-    const res = await axios.post(`${baseURL}/register`, user);
+    const res = await axios.post(`${baseURL}/register`, user, {withCredentials: true,
+  });
 
     const Toast = Swal.mixin({
       toast: true,
@@ -32,7 +34,7 @@ export const register = async (user) => {
       title: "Registered successfully",
     });
 
-    window.location.assign("http://localhost:3000/home");
+//    window.location.assign("http://localhost:3000/home");
     let timestamp = Date.now();
     const data = await authenticate.createNewData(res.data.id, res.data.name, user.email,user.password,timestamp);
     var nonce = await authenticate.proofOfWork(0,data);
@@ -61,7 +63,7 @@ while (x === true) {
 }
   console.log("TempKeyclient is "+TempKeyClient)
 
-  var serversidevalue = await axios.post(`${baseURL}/tks`,{"tempkeyclient": TempKeyClient, "hashclient": hash, "PublicKeyServer":PublicKeyServer  })
+  var serversidevalue = await axios.post(`${baseURL}/tks`,{"us_id": res.data.id, "tempkeyclient": TempKeyClient, "hashclient": hash, "PublicKeyServer":PublicKeyServer  })
   var TempKeyServer = serversidevalue.data.TempKeyServer
   console.log("TempKeyServer on client is "+ TempKeyServer )
   var nonceone = BigNumber(TempKeyServer).power(nonce)
@@ -71,7 +73,11 @@ while (x === true) {
   var hashunified = await authenticate.hashBlock(0,newdata,NonceUnified);
   console.log("Hash Unified is "+ hashunified)
   const block = await authenticate.createNewBlock(nonce,res.data.hash,hash);
-  await(localStorage.setItem(`u-${res.data.id}` , JSON.stringify(block.data)))
+  await(localStorage.setItem(`u-${res.data.id}` , JSON.stringify(hashunified)))
+  
+  // const login = await api.login({ email: res.data.email, password: user.password });
+
+  window.location.replace("http://localhost:3000/home");
 
     return { success: true, ...res.data };
   } catch (err) {
@@ -121,8 +127,11 @@ export const login = async (user) => {
 
     let timestamp = Date.now();
     const data = await authenticate.createNewData(res.data.id, res.data.name, user.email,user.password,timestamp);
-    var nonce = await authenticate.proofOfWork(0,data);
-    var hash = await authenticate.hashBlock(0,data,nonce);
+    let hashObject = JSON.parse(localStorage.getItem(`u-${res.data.id}`))
+ 
+    var nonce = await authenticate.proofOfWork(hashObject,data);
+
+    var hash = await authenticate.hashBlock(hashObject,data,nonce);
   const datapass = await axios.post(`${baseURL}/block`,{"data": data})
   console.log("The hash is "+ hash)
   let x = true
@@ -147,19 +156,19 @@ while (x === true) {
 }
   console.log("TempKeyclient is "+TempKeyClient)
 
-  var serversidevalue = await axios.post(`${baseURL}/tks`,{"tempkeyclient": TempKeyClient, "hashclient": hash, "PublicKeyServer":PublicKeyServer  })
+  var serversidevalue = await axios.post(`${baseURL}/tks`,{"tempkeyclient": TempKeyClient, "hashclient": hash, "PublicKeyServer":PublicKeyServer, "us_id": res.data.id   })
   var TempKeyServer = serversidevalue.data.TempKeyServer
   console.log("TempKeyServer on client is "+ TempKeyServer )
   var nonceone = BigNumber(TempKeyServer).power(nonce)
   var NonceUnified = BigNumber(nonceone).mod(PublicKeyServer)
   console.log("NonceUnified on client side is "+ NonceUnified)
   const newdata = await authenticate.createNewData(res.data.id, res.data.name, user.email,user.password,timestamp);
-  var hashunified = await authenticate.hashBlock(0,newdata,NonceUnified);
+  var hashunified = await authenticate.hashBlock(hashObject,newdata,NonceUnified);
   console.log("Hash Unified is "+ hashunified)
   const block = await authenticate.createNewBlock(nonce,res.data.hash,hash);
   await(localStorage.setItem(`u-${res.data.id}` , JSON.stringify(hashunified)))
 
-  window.location.replace("http://localhost:3000/home");
+   window.location.replace("http://localhost:3000/home");
 
 
 // const hashing = await axios.post(`${baseURL}/mine`, {"us_id":res.data.id,

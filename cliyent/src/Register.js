@@ -34,17 +34,8 @@ const Register =()=>{
         // var id = user.id;
         // console.log(authenticate.createNewData(id,name,user,pwd));
         // console.log(authenticate.proofOfWork(0,))
-        console.log(res)
-        const data = await authenticate.createNewData(res.id, res.name, res.email, pwd);
-    const nonce = await authenticate.proofOfWork(0,data);
-    const hash = await authenticate.hashBlock(0,data,nonce);
-    const block = await authenticate.createNewBlock(nonce,0,hash);
-    console.log(data)
-    console.log(nonce)
-  setNonce = nonce;
-  setHash = hash;
-    console.log(hash);
-    console.log(block)
+
+
 //        setAuth({user,pwd})
 //        setErrMsg(res.error||null)
         //setUser('');
